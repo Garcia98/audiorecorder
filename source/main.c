@@ -63,10 +63,14 @@ int main()
 
 			if(hidKeysUp() & KEY_A)
 			{
-				printf("Playing the recorded sample\n");
+				printf("Saving the recorded sample\n");
 				MIC_SetRecording(0);
+
+				FILE *file = fopen("audio.bin", "w+b");
+				fwrite(audiobuf, 1, audiobuf_size, file);
+				fclose(file);
+
 				GSPGPU_FlushDataCache(NULL, audiobuf, audiobuf_pos);
-				csndPlaySound(0x8, SOUND_ONE_SHOT | SOUND_FORMAT_16BIT, 16000, 1.0, 0.0, (u32*)audiobuf, NULL, audiobuf_pos);
 
 				memset(framebuf, 0xe0, 0x46500);
 
@@ -75,6 +79,7 @@ int main()
 
 				framebuf = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
 				memset(framebuf, 0xe0, 0x46500);
+				printf("Finished\n");
 			}
 		}
 
