@@ -55,7 +55,7 @@ int main()
 
 			if((hidKeysHeld() & KEY_A) && audiobuf_pos < audiobuf_size)
 			{
-				audiobuf_pos+= MIC_ReadAudioData(&audiobuf[audiobuf_pos], audiobuf_size-audiobuf_pos, 1);
+				audiobuf_pos+= MIC_ReadAudioData(&audiobuf[audiobuf_pos], audiobuf_size-audiobuf_pos, 0);
 				if(audiobuf_pos > audiobuf_size)audiobuf_pos = audiobuf_size;
 
 				memset(framebuf, 0x60, 0x46500);
