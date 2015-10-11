@@ -9,7 +9,7 @@ int main()
 	u8 *framebuf;
 	u32 *sharedmem = NULL, sharedmem_size = 0x30000;
 	u8 *audiobuf;
-	u32 audiobuf_size = 0x100000, audiobuf_pos = 0;
+	u32 audiobuf_size = 0x200000, audiobuf_pos = 0;
 	u8 control=0x40;
 	u32 audio_initialized = 0;
 
