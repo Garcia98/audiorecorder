@@ -70,10 +70,6 @@ int main()
 				printf("Saving the recorded sample\n");
 				MIC_SetRecording(0);
 
-				FILE *file = fopen("audio.bin", "w+b");
-				fwrite(audiobuf, 1, audiobuf_pos, file);
-				fclose(file);
-
 				unsigned long buf_size = audiobuf_pos / 2;
 				write_wav("audio.wav", buf_size, audiobuf, S_RATE);
 
