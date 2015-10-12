@@ -4,6 +4,10 @@
 #include <malloc.h>
 #include <3ds.h>
 
+#include "wav.h"
+
+#define S_RATE 16000
+
 int main()
 {
 	u8 *framebuf;
@@ -69,6 +73,9 @@ int main()
 				FILE *file = fopen("audio.bin", "w+b");
 				fwrite(audiobuf, 1, audiobuf_pos, file);
 				fclose(file);
+
+				unsigned long buf_size = audiobuf_pos / 2;
+				write_wav("audio.wav", buf_size, audiobuf, S_RATE);
 
 				GSPGPU_FlushDataCache(NULL, audiobuf, audiobuf_pos);
 
