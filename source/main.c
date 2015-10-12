@@ -60,7 +60,7 @@ int main()
 			MIC_SetRecording(0);
 
 			unsigned long buf_size = audiobuf_pos / 2;
-			write_wav("audio.wav", buf_size, audiobuf, S_RATE);
+			write_wav("audio.wav", buf_size, (short int *)audiobuf, S_RATE);
 
 			GSPGPU_FlushDataCache(NULL, audiobuf, audiobuf_pos);
 
