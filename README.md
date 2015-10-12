@@ -1,5 +1,7 @@
-mic
+Audio Recorder
 =======
 
-Example for using the microphone with ctrulib. Hold down the A button to record, the app will then play the recorded audio once the A button is released. Roughly 32 seconds of audio can be recorded with the default audiobuf size in this app.
+Application for recording audio with the microphone using ctrulib.
+
+Hold down the A button to record, the app will then save the recorded audio in WAV format once the A button is released. Roughly 1:05 minutes of audio can be recorded with the default audiobuf size in this app.
 
