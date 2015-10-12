@@ -32,6 +32,10 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 
+APP_TITLE := Audio Recorder
+APP_DESCRIPTION := Just record your audio
+APP_AUTHOR := Garcia98
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
