@@ -67,7 +67,7 @@ int main()
 				MIC_SetRecording(0);
 
 				FILE *file = fopen("audio.bin", "w+b");
-				fwrite(audiobuf, 1, audiobuf_size, file);
+				fwrite(audiobuf, 1, audiobuf_pos, file);
 				fclose(file);
 
 				GSPGPU_FlushDataCache(NULL, audiobuf, audiobuf_pos);
