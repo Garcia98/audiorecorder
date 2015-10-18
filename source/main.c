@@ -21,12 +21,14 @@ int main()
 	gfxInitDefault();
 	consoleInit(GFX_BOTTOM, NULL);
 
-	printf("Init success\n");
-
 	sharedmem = (u32*)memalign(0x1000, sharedmem_size);
 	audiobuf = linearAlloc(audiobuf_size);
 
 	MIC_Initialize(sharedmem, sharedmem_size, control, 0, 3, 1, 1);//See mic.h.
+
+	int printed = 0;
+
+	printf("Init successful\n");
 
 	while(aptMainLoop())
 	{
@@ -51,13 +53,17 @@ int main()
 		{
 			audiobuf_pos+= MIC_ReadAudioData(&audiobuf[audiobuf_pos], audiobuf_size-audiobuf_pos, 0);
 			if(audiobuf_pos > audiobuf_size)audiobuf_pos = audiobuf_size;
-			if(audiobuf_pos >= 32704)printf("Now recording\n");
+			if(audiobuf_pos >= 32704 && printed == 0){
+				printf("Now recording\n");
+				printed = 1;
+			}
+
 			memset(framebuf, 0x60, 0x46500);
 		}
 
 		if(hidKeysUp() & KEY_A)
 		{
-			printf("Saving the recorded sample\n");
+			printf("Saving the recorded audio\n");
 			MIC_SetRecording(0);
 
 			//Prevent first mute second to be allocated in wav struct
@@ -77,7 +83,10 @@ int main()
 
 			framebuf = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
 			memset(framebuf, 0xe0, 0x46500);
-			printf("Finished\n");
+
+			printed = 0;
+
+			printf("Audio saved in audio.wav\n");
 		}
 
 		gfxFlushBuffers();
