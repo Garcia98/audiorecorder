@@ -15,6 +15,8 @@ int main()
 	u8 *audiobuf;
 	u32 audiobuf_size = 0x200000, audiobuf_pos = 0;
 	u8 control=0x40;
+	u8 *nomute_audiobuf = 0;
+	unsigned long buf_size = 0;
 
 	gfxInitDefault();
 	consoleInit(GFX_BOTTOM, NULL);
@@ -43,14 +45,13 @@ int main()
 			MIC_SetRecording(1);
 
 			memset(framebuf, 0x20, 0x46500);
-			printf("Now recording\n");
 		}
 
 		if((hidKeysHeld() & KEY_A) && audiobuf_pos < audiobuf_size)
 		{
 			audiobuf_pos+= MIC_ReadAudioData(&audiobuf[audiobuf_pos], audiobuf_size-audiobuf_pos, 0);
 			if(audiobuf_pos > audiobuf_size)audiobuf_pos = audiobuf_size;
-
+			if(audiobuf_pos >= 32704)printf("Now recording\n");
 			memset(framebuf, 0x60, 0x46500);
 		}
 
@@ -59,10 +60,15 @@ int main()
 			printf("Saving the recorded sample\n");
 			MIC_SetRecording(0);
 
-			unsigned long buf_size = audiobuf_pos / 2;
-			write_wav("audio.wav", buf_size, (short int *)audiobuf, S_RATE);
+			//Prevent first mute second to be allocated in wav struct
+			if(audiobuf_pos >= 32704){
+				nomute_audiobuf =  (u8*)linearAlloc(audiobuf_pos - 32704);
+				memcpy(nomute_audiobuf,&audiobuf[32704],audiobuf_pos - 32704);
+				buf_size = (audiobuf_pos - 32704) / 2;
+				write_wav("audio.wav", buf_size, (short int *)nomute_audiobuf, S_RATE);
+			}
 
-			GSPGPU_FlushDataCache(NULL, audiobuf, audiobuf_pos);
+			GSPGPU_FlushDataCache(NULL, nomute_audiobuf, audiobuf_pos);
 
 			memset(framebuf, 0xe0, 0x46500);
 
@@ -82,6 +88,7 @@ int main()
 
 	free(sharedmem);
 	linearFree(audiobuf);
+	linearFree(nomute_audiobuf);
 
 	gfxExit();
 	return 0;
