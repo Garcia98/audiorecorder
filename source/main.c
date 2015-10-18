@@ -6,7 +6,7 @@
 
 #include "wav.h"
 
-#define S_RATE 16000
+#define S_RATE 16360
 
 int main()
 {
