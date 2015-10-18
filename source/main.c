@@ -13,7 +13,7 @@ int main()
 	u8 *framebuf;
 	u32 *sharedmem = NULL, sharedmem_size = 0x30000;
 	u8 *audiobuf;
-	u32 audiobuf_size = 0x200000, audiobuf_pos = 0;
+	u32 audiobuf_size = 0x927c00, audiobuf_pos = 0;
 	u8 control=0x40;
 	u8 *nomute_audiobuf = 0;
 	unsigned long buf_size = 0;
